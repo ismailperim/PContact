@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using Core.Exceptions.DataAccess;
+using Core.Models;
 using DataAccess.Interfaces;
 using Microsoft.Extensions.Options;
 using Npgsql;
@@ -16,15 +17,18 @@ namespace DataAccess.Concretes
             if (_dbConnection == null)
             {
                 _connectionString = options.Value?.DatabaseOptions?.ConnectionString;
+
+                if (string.IsNullOrEmpty(_connectionString))
+                    throw new ConnectionStringNullException();
+
                 _dbConnection = new NpgsqlConnection(_connectionString);
             }
         }
         public IDbConnection CreateConnection()
         {
             if (_dbConnection.State != ConnectionState.Open)
-            {
                 _dbConnection.Open();
-            }
+
             return _dbConnection;
         }
         public IDbCommand CreateCommand(string commandText, CommandType commandType, IDbConnection connection)
