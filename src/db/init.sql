@@ -2,10 +2,19 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 
 CREATE TABLE IF NOT EXISTS person (
-  id UUID NOT NULL,
-  name VARCHAR(100),
-  surname VARCHAR(100),
-  company VARCHAR(100),
-  create_date TIMESTAMP WITH TIME ZONE,
-  PRIMARY KEY (id)
+	id UUID NOT NULL,
+	name VARCHAR(100),
+	surname VARCHAR(100),
+	company VARCHAR(100),
+	create_date TIMESTAMP WITH TIME ZONE,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS contact (
+	id UUID NOT NULL,
+	user_id	UUID NOT NULL,
+	type SMALLINT,
+	value VARCHAR(100),
+	create_date TIMESTAMP WITH TIME ZONE,
+	PRIMARY KEY (id)
 );
