@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  db:
+    image: postgres
+    container_name: db.pcontact
+    restart: always
+    ports:
+      - "54320:5432"
+    environment:
+      POSTGRES_USER: ismail
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - data_db:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+  db.admin:
+    image: dpage/pgadmin4
+    container_name: dbadmin.pcontact
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ismail@perim.net
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - data_dbadmin:/var/lib/pgadmin
+volumes:
+  data_db:
+  data_dbadmin:
