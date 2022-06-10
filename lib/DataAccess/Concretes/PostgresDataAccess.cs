@@ -7,7 +7,7 @@ using System.Data;
 
 namespace DataAccess.Concretes
 {
-    internal class PostgresDataAccess : IDataAccess
+    public class PostgresDataAccess : IDataAccess
     {
         private string? _connectionString { get; set; }
         private readonly IDbConnection _dbConnection;

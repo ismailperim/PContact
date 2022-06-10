@@ -20,14 +20,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "lib\DataAcces
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "lib\Core\Core.csproj", "{47D1AF6B-5E19-46B2-9A64-8A7A3378FF01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contact.Service", "src\services\Contact\Contact.Service\Contact.Service.csproj", "{9CB0E002-7DF2-4D67-A59B-8F1FF63EDDC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contact.Service", "src\services\Contact\Contact.Service\Contact.Service.csproj", "{9CB0E002-7DF2-4D67-A59B-8F1FF63EDDC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contact.Models", "src\services\Contact\Contact.Models\Contact.Models.csproj", "{4F1100A1-ACEA-4AEB-9FF1-56AB04740AFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contact.Models", "src\services\Contact\Contact.Models\Contact.Models.csproj", "{4F1100A1-ACEA-4AEB-9FF1-56AB04740AFB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "db", "db", "{FE98E184-CECD-4D2A-ADAD-19BD2EA3E7F5}"
 	ProjectSection(SolutionItems) = preProject
 		src\db\init.sql = src\db\init.sql
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{885C3DB8-AF42-4168-82DD-37139B38D0DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.ContactService", "test\Test.ContactService\Test.ContactService.csproj", "{9DC12671-204F-425A-9609-2AA3B80FE3CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +59,10 @@ Global
 		{4F1100A1-ACEA-4AEB-9FF1-56AB04740AFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F1100A1-ACEA-4AEB-9FF1-56AB04740AFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F1100A1-ACEA-4AEB-9FF1-56AB04740AFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DC12671-204F-425A-9609-2AA3B80FE3CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DC12671-204F-425A-9609-2AA3B80FE3CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DC12671-204F-425A-9609-2AA3B80FE3CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DC12671-204F-425A-9609-2AA3B80FE3CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +76,7 @@ Global
 		{9CB0E002-7DF2-4D67-A59B-8F1FF63EDDC7} = {9D9D7800-17F9-4294-B9DB-B4FA5F14AFC2}
 		{4F1100A1-ACEA-4AEB-9FF1-56AB04740AFB} = {9D9D7800-17F9-4294-B9DB-B4FA5F14AFC2}
 		{FE98E184-CECD-4D2A-ADAD-19BD2EA3E7F5} = {BBCF8B7D-B5CE-44C5-A9D2-624C4241D646}
+		{9DC12671-204F-425A-9609-2AA3B80FE3CD} = {885C3DB8-AF42-4168-82DD-37139B38D0DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {284E6B85-DCD9-4736-AD14-1B3C21FAAA14}

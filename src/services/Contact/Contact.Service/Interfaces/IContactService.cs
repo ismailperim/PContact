@@ -2,7 +2,7 @@
 
 namespace Contact.Service.Interfaces
 {
-    public interface IContactService
+    public interface IContactService : IDisposable
     {
         Guid AddPerson(Person model);
         bool RemovePerson(Guid personID);
