@@ -26,6 +26,16 @@ CREATE TABLE IF NOT EXISTS contact (
         NOT VALID
 );
 
+-- Report table creating
+CREATE TABLE IF NOT EXISTS report (
+	id UUID NOT NULL,
+	location VARCHAR(100),
+	status SMALLINT,
+	path VARCHAR(100),
+	create_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id)
+);
+
 CREATE INDEX IF NOT EXISTS fki_fk_id_person_id
     ON public.contact USING btree
     (person_id ASC NULLS LAST)
@@ -122,5 +132,19 @@ CREATE OR REPLACE FUNCTION public.sp_remove_contact_info(p_person_id UUID, p_con
 AS $$
 BEGIN
     DELETE FROM public.contact WHERE id = p_contact_info_id AND person_id = p_person_id;
+END;    
+$$ LANGUAGE plpgsql;
+
+-- Gets Contact Report Result
+CREATE OR REPLACE FUNCTION public.sp_get_contact_report(p_location VARCHAR)
+    RETURNS TABLE(location VARCHAR, person_count INT, phone_count INT)
+AS $$
+DECLARE v_person_count INT;
+DECLARE v_phone_count INT;
+BEGIN
+    SELECT COUNT(1) FROM person p INNER JOIN contact c ON p.id = c.person_id AND c.type = 3 AND c.value = p_location INTO v_person_count;
+    SELECT COUNT(1) FROM contact p INNER JOIN contact c ON p.person_id = c.person_id AND c.type = 3 AND c.value = p_location WHERE p.type = 1 INTO v_phone_count;
+    RETURN QUERY
+    SELECT p_location, v_person_count, v_phone_count;
 END;    
 $$ LANGUAGE plpgsql;

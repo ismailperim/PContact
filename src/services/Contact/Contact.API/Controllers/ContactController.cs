@@ -91,10 +91,19 @@ namespace Contact.API.Controllers
         [Route("v1/persons/{personID}/contacts/{contactInfoID}")]
         public bool Remove(Guid personID, Guid contactInfoID)
         {
-            return _contactService.RemoveContactInfo(personID,contactInfoID);
+            return _contactService.RemoveContactInfo(personID, contactInfoID);
         }
-
-
-
+        
+        /// <summary>
+        /// Gets Contact Report by Location
+        /// </summary>
+        /// <param name="location">Location Name</param>
+        /// <returns>Contact Report model</returns>
+        [HttpGet]
+        [Route("v1/report")]
+        public ContactReport GetReport(string location)
+        {
+            return _contactService.GetReport(location);
+        }
     }
 }

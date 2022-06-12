@@ -235,6 +235,48 @@ namespace Contact.Service
         }
 
 
+        /// <summary>
+        /// Gets Contact Report result
+        /// </summary>
+        /// <param name="location">Location</param>
+        /// <returns>Contact Report</returns>
+        /// <exception cref="DBManagerNullException">Throws when the DB manager null</exception>
+        public ContactReport GetReport(string location)
+        {
+            #region --Data Validations--
+            if (_dbManager is null)
+                throw new DBManagerNullException("ContactService");
+            #endregion
+
+            IDataReader reader = null;
+            ContactReport model = new ContactReport();
+            try
+            {
+                var parameters = new List<IDbDataParameter>();
+                parameters.Add(_dbManager.CreateParameter(Constant.P_LOCATION, location, DbType.String));
+
+
+                reader = _dbManager.GetDataReader(Constant.SP_GET_CONTACT_REPORT, parameters.ToArray());
+                while (reader.Read())
+                {
+                    model.Location = reader.GetDynamicValue<string>(Constant.C_LOCATION);
+                    model.PersonCount = reader.GetDynamicValue<int>(Constant.C_PERSON_COUNT);
+                    model.PhoneCount = reader.GetDynamicValue<int>(Constant.C_PHONE_COUNT);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+            }
+
+            return model;
+        }
+
         #region -- Dispose --
         ~ContactService() => Dispose(false);
         public void Dispose()

@@ -8,7 +8,7 @@ namespace Report.Models
         public DateTime CreateDate { get; set; }
         public ReportStatus Status { get; set; }
 
-        public ReportResult Result { get; set; }
+        public string Path { get; set; }
 
     }
 }
