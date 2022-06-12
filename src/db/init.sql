@@ -177,3 +177,14 @@ BEGIN
 	LIMIT p_page_row_count OFFSET (p_page_number * p_page_row_count);
 END;    
 $$ LANGUAGE plpgsql;
+
+-- GetReportByID function creating 
+CREATE OR REPLACE FUNCTION public.sp_get_report_by_id(p_report_id UUID)
+    RETURNS TABLE(id UUID,location VARCHAR,status SMALLINT,path VARCHAR,create_date TIMESTAMP WITH TIME ZONE)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT * FROM public.report AS r
+    WHERE r.id = p_report_id;
+END;    
+$$ LANGUAGE plpgsql;

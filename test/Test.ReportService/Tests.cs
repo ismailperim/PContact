@@ -47,5 +47,18 @@ namespace Test.ReportService
 
             Assert.IsTrue(list.Count > 0);
         }
+
+
+        [Test]
+        public void Get_Report_By_ID()
+        {
+            var service = new Report.Service.ReportService(_provider);
+
+            var reportID = service.AddReportRequest("Ýzmir");
+
+            var result = service.GetReportByID(reportID);
+
+            Assert.IsTrue(result.Location == "Ýzmir");
+        }        
     }
 }

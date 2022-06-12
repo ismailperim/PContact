@@ -43,9 +43,48 @@ namespace Report.Service
             return Guid.Parse(_dbManager.GetScalarValue(Constant.SP_ADD_REPORT_REQUEST, parameters.ToArray()).ToString());
         }
 
+        /// <summary>
+        /// Gets Report by UniqueID
+        /// </summary>
+        /// <param name="reportID">UniqueID of Report</param>
+        /// <returns>Report with details</returns>
+        /// <exception cref="DBManagerNullException">Throws when the DB manager null</exception>
         public Models.Report GetReportByID(Guid reportID)
         {
-            throw new NotImplementedException();
+            #region --Data Validations--
+            if (_dbManager is null)
+                throw new DBManagerNullException("ReportService");
+            #endregion
+
+            IDataReader reader = null;
+            Models.Report model = new Models.Report();
+            try
+            {
+                var parameters = new List<IDbDataParameter>();
+                parameters.Add(_dbManager.CreateParameter(Constant.P_REPORT_ID,reportID, DbType.Guid));
+
+
+                reader = _dbManager.GetDataReader(Constant.SP_GET_REPORT_BY_ID, parameters.ToArray());
+                while (reader.Read())
+                {
+                    model.ID = reader.GetDynamicValue<Guid>(Constant.C_ID);
+                    model.Location = reader.GetDynamicValue<string>(Constant.C_LOCATION);
+                    model.Status = (ReportStatus)reader.GetDynamicValue<short>(Constant.C_STATUS);
+                    model.Path = reader.GetDynamicValue<string>(Constant.C_PATH);
+                    model.CreateDate = reader.GetDynamicValue<DateTime>(Constant.C_CREATE_DATE);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+            }
+
+            return model;
         }
 
         /// <summary>
