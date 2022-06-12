@@ -18,9 +18,20 @@ CREATE TABLE IF NOT EXISTS contact (
 	type SMALLINT,
 	value VARCHAR(100),
 	create_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+	CONSTRAINT fk_id_person_id FOREIGN KEY (person_id)
+        REFERENCES public.person (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
 );
 
+CREATE INDEX IF NOT EXISTS fki_fk_id_person_id
+    ON public.contact USING btree
+    (person_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+    
+	
 -- AddPerson function creating
 CREATE OR REPLACE FUNCTION public.sp_add_person(p_name VARCHAR,p_surname VARCHAR,p_company VARCHAR,p_contact_infos JSONB DEFAULT NULL)
     RETURNS UUID
@@ -39,5 +50,23 @@ BEGIN
     
     
     RETURN v_person_id;
+END;    
+$$ LANGUAGE plpgsql;
+
+-- AddContactInfo function creating
+CREATE OR REPLACE FUNCTION public.sp_add_contact_info(p_person_id UUID,p_type SMALLINT, p_value VARCHAR)
+    RETURNS UUID
+AS $$
+DECLARE 
+    v_contact_id UUID;
+BEGIN
+
+    SELECT uuid_generate_v4() INTO v_contact_id;
+    
+    INSERT INTO public.contact(id,person_id,type,value)
+    SELECT v_contact_id, p_person_id AS person_id, p_type AS type, p_value AS value;
+    
+    
+    RETURN v_contact_id;
 END;    
 $$ LANGUAGE plpgsql;

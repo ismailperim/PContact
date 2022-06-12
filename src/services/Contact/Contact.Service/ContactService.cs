@@ -20,17 +20,44 @@ namespace Contact.Service
         {
             _dbManager = provider.GetService<IDBManager>();
         }
-
+        /// <summary>
+        /// Adds new Contact Information to existing Person
+        /// </summary>
+        /// <param name="personID">Person UniqueID</param>
+        /// <param name="model">ContactInfo model</param>
+        /// <returns>Created Contact Information UniqueID</returns>
+        /// <exception cref="DBManagerNullException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
         public Guid AddContactInfo(Guid personID, ContactInfo model)
         {
-            throw new NotImplementedException();
+            #region --Data Validations--
+            if (_dbManager is null)
+                throw new DBManagerNullException("ContactService");
+
+            if (model is null)
+                throw new ArgumentNullException("model");
+
+            if (model.Value is null)
+                throw new ArgumentNullException("model.Value");
+            #endregion
+
+
+            var parameters = new List<IDbDataParameter>();
+
+            parameters.Add(_dbManager.CreateParameter(Constant.P_PERSON_ID, personID, DbType.Guid));
+            parameters.Add(_dbManager.CreateParameter(Constant.P_TYPE, (short)model.Type, DbType.Int16));
+            parameters.Add(_dbManager.CreateParameter(Constant.P_VALUE, model.Value, DbType.String));
+
+
+
+            return Guid.Parse(_dbManager.GetScalarValue(Constant.SP_ADD_CONTACT_INFO, parameters.ToArray()).ToString());
         }
 
         /// <summary>
         /// Adds new Person to DB
         /// </summary>
         /// <param name="model">Person model</param>
-        /// <returns>Created Person UUID</returns>
+        /// <returns>Created Person UniqueID</returns>
         /// <exception cref="DBManagerNullException">Throws when de DB manager null</exception>
         /// <exception cref="ArgumentNullException">Throws when de DB manager null</exception>
         public Guid AddPerson(Person model)

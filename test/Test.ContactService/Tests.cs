@@ -73,5 +73,24 @@ namespace Test.ContactService
 
             Assert.Fail();
         }
+
+
+        [Test]
+        public void Add_ContactInfo()
+        {
+            var service = new Contact.Service.ContactService(_provider);
+            var person = new Contact.Models.Person() { Name = "Ýsmail", Surname = "Perim", Company = "Perim Inc." };
+
+           var personID =  service.AddPerson(person);
+
+
+            service.AddContactInfo(personID, new Contact.Models.ContactInfo()
+            {
+                Type = Contact.Models.Enums.ContactType.Location,
+                Value = "Ýzmir"
+            });
+
+            Assert.Pass();
+        }
     }
 }
