@@ -5,7 +5,6 @@ using DataAccess.Interfaces;
 using DataAccess.Manager;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Moq;
 
 namespace Test.ContactService
 {
@@ -126,5 +125,27 @@ namespace Test.ContactService
 
             Assert.IsTrue(list.Count > 0);
         }
+
+        [Test]
+        public void Get_Person_By_ID()
+        {
+            var service = new Contact.Service.ContactService(_provider);
+            var person = new Contact.Models.Person() { Name = "Ýsmail", Surname = "Perim", Company = "Perim Inc." };
+
+            var personID = service.AddPerson(person);
+
+
+            service.AddContactInfo(personID, new Contact.Models.ContactInfo()
+            {
+                Type = Contact.Models.Enums.ContactType.Location,
+                Value = "Ýzmir"
+            });
+
+            Contact.Models.Person newPerson = service.GetPersonByID(personID);
+
+
+            Assert.IsTrue(personID == newPerson.ID && newPerson.ContactInfos.Count > 0 && newPerson.ContactInfos[0].Value == "Ýzmir" && newPerson.Name == "Ýsmail");
+        }
+
     }
 }

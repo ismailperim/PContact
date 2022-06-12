@@ -53,6 +53,28 @@ BEGIN
 END;    
 $$ LANGUAGE plpgsql;
 
+-- AddContactInfo function creating
+CREATE OR REPLACE FUNCTION public.sp_add_contact_info(
+	p_person_id UUID,
+	p_type SMALLINT,
+	p_value VARCHAR)
+    RETURNS UUID
+AS $$
+DECLARE 
+    v_contact_id UUID;
+BEGIN
+
+    SELECT uuid_generate_v4() INTO v_contact_id;
+    
+    INSERT INTO public.contact(id,person_id,type,value)
+    SELECT v_contact_id, p_person_id AS person_id, p_type AS type, p_value AS value;
+    
+    
+    RETURN v_contact_id;
+END;    
+$$ LANGUAGE plpgsql;
+
+
 -- GetAllPersons function creating
 CREATE OR REPLACE FUNCTION public.sp_get_all_persons(p_page_row_count INT DEFAULT 10, p_page_number INT DEFAULT 0)
     RETURNS TABLE(id UUID,name VARCHAR,surname VARCHAR,company VARCHAR,create_date TIMESTAMP WITH TIME ZONE)
@@ -62,5 +84,24 @@ BEGIN
     SELECT * FROM public.person
     ORDER BY create_date DESC
 	LIMIT p_page_row_count OFFSET (p_page_number * p_page_row_count);
+END;    
+$$ LANGUAGE plpgsql;
+
+-- GetPersonByID function creating
+CREATE OR REPLACE FUNCTION public.sp_get_person_by_id(p_person_id UUID)
+    RETURNS TABLE(id UUID,name VARCHAR,surname VARCHAR,company VARCHAR,create_date TIMESTAMP WITH TIME ZONE, contact_info JSON)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT p.*, ci.data AS contact_info FROM 
+    person AS p 
+    LEFT JOIN LATERAL (
+        SELECT 
+            json_agg(json_build_object('ID',c.id,'Type',c.type,'Value',c.value)) AS data,
+            c.person_id
+        FROM 
+            contact c
+        GROUP BY person_id) AS ci ON ci.person_id = p.id
+    WHERE p.id = p_person_id;
 END;    
 $$ LANGUAGE plpgsql;

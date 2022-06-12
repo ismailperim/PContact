@@ -5,6 +5,7 @@
         public const string SP_ADD_PERSON = "public.sp_add_person";
         public const string SP_ADD_CONTACT_INFO = "public.sp_add_contact_info";
         public const string SP_GET_ALL_PERSONS = "public.sp_get_all_persons";
+        public const string SP_GET_PERSON_BY_ID = "public.sp_get_person_by_id";
 
 
         public const string P_NAME = "p_name";
@@ -23,6 +24,7 @@
         public const string C_SURNAME = "surname";
         public const string C_COMPANY = "company";
         public const string C_CREATE_DATE = "create_date";
+        public const string C_CONTACT_INFO = "contact_info";
 
 
 

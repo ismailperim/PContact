@@ -142,9 +142,52 @@ namespace Contact.Service
 
         }
 
+        /// <summary>
+        /// Gets a Person by UniqueID
+        /// </summary>
+        /// <param name="personID">UniqueID of Person</param>
+        /// <returns>Person model with ContactInfos</returns>
+        /// <exception cref="DBManagerNullException">Throws when the DB manager null</exception>
         public Person GetPersonByID(Guid personID)
         {
-            throw new NotImplementedException();
+            #region --Data Validations--
+            if (_dbManager is null)
+                throw new DBManagerNullException("ContactService");
+            #endregion
+
+            IDataReader reader = null;
+            Person model = new Person();
+            try
+            {
+                var parameters = new List<IDbDataParameter>();
+                parameters.Add(_dbManager.CreateParameter(Constant.P_PERSON_ID, personID, DbType.Guid));
+
+
+                reader = _dbManager.GetDataReader(Constant.SP_GET_PERSON_BY_ID, parameters.ToArray());
+                while (reader.Read())
+                {
+                    model.ID = reader.GetDynamicValue<Guid>(Constant.C_ID);
+                    model.Name = reader.GetDynamicValue<string>(Constant.C_NAME);
+                    model.Surname = reader.GetDynamicValue<string>(Constant.C_SURNAME);
+                    model.Company = reader.GetDynamicValue<string>(Constant.C_COMPANY);
+
+                    string contactInfoJson = reader.GetDynamicValue<string>(Constant.C_CONTACT_INFO);
+
+                    if (!string.IsNullOrEmpty(contactInfoJson))
+                        model.ContactInfos = JsonConvert.DeserializeObject<List<ContactInfo>>(contactInfoJson);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+            }
+
+            return model;
         }
 
         public bool RemoveContactInfo(Guid personID, Guid contactInfoID)
