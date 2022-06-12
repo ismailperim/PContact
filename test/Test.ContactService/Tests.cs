@@ -116,5 +116,15 @@ namespace Test.ContactService
 
             Assert.Fail();
         }
+
+        [Test]
+        public void Get_All_Persons()
+        {
+            var service = new Contact.Service.ContactService(_provider);
+
+            var list = service.GetAllPersons();
+
+            Assert.IsTrue(list.Count > 0);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Contact.Models;
 using Contact.Service.Interfaces;
 using Core.Exceptions.DataAccess;
+using DataAccess.Helpers;
 using DataAccess.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -26,8 +27,8 @@ namespace Contact.Service
         /// <param name="personID">Person UniqueID</param>
         /// <param name="model">ContactInfo model</param>
         /// <returns>Created Contact Information UniqueID</returns>
-        /// <exception cref="DBManagerNullException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="DBManagerNullException">Throws when the DB manager null</exception>
+        /// <exception cref="ArgumentNullException">Throws when model or model required properties null</exception>
         public Guid AddContactInfo(Guid personID, ContactInfo model)
         {
             #region --Data Validations--
@@ -58,8 +59,8 @@ namespace Contact.Service
         /// </summary>
         /// <param name="model">Person model</param>
         /// <returns>Created Person UniqueID</returns>
-        /// <exception cref="DBManagerNullException">Throws when de DB manager null</exception>
-        /// <exception cref="ArgumentNullException">Throws when de DB manager null</exception>
+        /// <exception cref="DBManagerNullException">Throws when the DB manager null</exception>
+        /// <exception cref="ArgumentNullException">Throws when model or model required properties null</exception>
         public Guid AddPerson(Person model)
         {
             #region --Data Validations--
@@ -91,9 +92,54 @@ namespace Contact.Service
             return Guid.Parse(_dbManager.GetScalarValue(Constant.SP_ADD_PERSON, parameters.ToArray()).ToString());
         }
 
-        public List<Person> GetAllPersons()
+
+        /// <summary>
+        /// Gets all Person with paging
+        /// </summary>
+        /// <param name="pageRowCount">Row count for each page</param>
+        /// <param name="pageNumber">Page number</param>
+        /// <returns>List of Person for requested page</returns>
+        /// <exception cref="DBManagerNullException">Throws when the DB manager null</exception>
+        public List<Person> GetAllPersons(int pageRowCount = 10, int pageNumber = 0)
         {
-            throw new NotImplementedException();
+            #region --Data Validations--
+            if (_dbManager is null)
+                throw new DBManagerNullException("ContactService");
+            #endregion
+
+            
+            IDataReader reader = null;
+            List<Person> list = new List<Person>();
+            try
+            {
+                var parameters = new List<IDbDataParameter>();
+               parameters.Add(_dbManager.CreateParameter(Constant.P_PAGE_ROW_COUNT, pageRowCount, DbType.Int32));
+               parameters.Add(_dbManager.CreateParameter(Constant.P_PAGE_NUMBER, pageNumber, DbType.Int32));
+
+                reader = _dbManager.GetDataReader(Constant.SP_GET_ALL_PERSONS, parameters.ToArray());
+                while (reader.Read())
+                {
+                    Person model = new Person();
+                    model.ID = reader.GetDynamicValue<Guid>(Constant.C_ID);
+                    model.Name = reader.GetDynamicValue<string>(Constant.C_NAME);
+                    model.Surname = reader.GetDynamicValue<string>(Constant.C_SURNAME);
+                    model.Company = reader.GetDynamicValue<string>(Constant.C_COMPANY);
+
+                    list.Add(model);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+            }
+
+            return list;
+
         }
 
         public Person GetPersonByID(Guid personID)

@@ -8,7 +8,7 @@ namespace Contact.Service.Interfaces
         bool RemovePerson(Guid personID);
         Guid AddContactInfo(Guid personID, ContactInfo model);
         bool RemoveContactInfo(Guid personID, Guid contactInfoID);
-        List<Person> GetAllPersons();
+        List<Person> GetAllPersons(int pageRowCount = 10, int pageNumber = 0);
         Person GetPersonByID(Guid personID);
     }
 }
