@@ -69,7 +69,7 @@ namespace Test.ContactService
             {
                 Assert.Pass();
             }
-          
+
 
             Assert.Fail();
         }
@@ -81,7 +81,7 @@ namespace Test.ContactService
             var service = new Contact.Service.ContactService(_provider);
             var person = new Contact.Models.Person() { Name = "Ýsmail", Surname = "Perim", Company = "Perim Inc." };
 
-           var personID =  service.AddPerson(person);
+            var personID = service.AddPerson(person);
 
 
             service.AddContactInfo(personID, new Contact.Models.ContactInfo()
@@ -91,6 +91,30 @@ namespace Test.ContactService
             });
 
             Assert.Pass();
+        }
+
+        [Test]
+        public void Add_ContactInfo_With_MissingParams()
+        {
+            var service = new Contact.Service.ContactService(_provider);
+            var person = new Contact.Models.Person() { Name = "Ýsmail", Surname = "Perim", Company = "Perim Inc." };
+
+            var personID = service.AddPerson(person);
+
+            try
+            {
+                service.AddContactInfo(personID, new Contact.Models.ContactInfo()
+                {
+                    Type = Contact.Models.Enums.ContactType.Location,
+                });
+            }
+            catch (ArgumentNullException)
+            {
+
+                Assert.Pass();
+            }
+
+            Assert.Fail();
         }
     }
 }
