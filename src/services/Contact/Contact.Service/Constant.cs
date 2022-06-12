@@ -6,6 +6,8 @@
         public const string SP_ADD_CONTACT_INFO = "public.sp_add_contact_info";
         public const string SP_GET_ALL_PERSONS = "public.sp_get_all_persons";
         public const string SP_GET_PERSON_BY_ID = "public.sp_get_person_by_id";
+        public const string SP_REMOVE_PERSON = "public.sp_remove_person";
+        public const string SP_REMOVE_CONTACT_INFO = "public.sp_remove_contact_info";
 
 
         public const string P_NAME = "p_name";
@@ -17,6 +19,7 @@
         public const string P_VALUE = "p_value";
         public const string P_PAGE_ROW_COUNT = "p_page_row_count";
         public const string P_PAGE_NUMBER = "p_page_number";
+        public const string P_CONTACT_INFO_ID = "p_contact_info_id";
 
 
         public const string C_ID = "id";

@@ -147,5 +147,43 @@ namespace Test.ContactService
             Assert.IsTrue(personID == newPerson.ID && newPerson.ContactInfos.Count > 0 && newPerson.ContactInfos[0].Value == "Ýzmir" && newPerson.Name == "Ýsmail");
         }
 
+
+        [Test]
+        public void Remove_Person()
+        {
+            var service = new Contact.Service.ContactService(_provider);
+            var person = new Contact.Models.Person() { Name = "Ýsmail", Surname = "Perim", Company = "Perim Inc." };
+
+            var personID = service.AddPerson(person);
+
+            service.AddContactInfo(personID, new Contact.Models.ContactInfo()
+            {
+                Type = Contact.Models.Enums.ContactType.Location,
+                Value = "Ýzmir"
+            });
+
+            Assert.IsTrue(service.RemovePerson(personID));
+        }
+
+
+
+        [Test]
+        public void Remove_ContactInfo()
+        {
+            var service = new Contact.Service.ContactService(_provider);
+            var person = new Contact.Models.Person() { Name = "Ýsmail", Surname = "Perim", Company = "Perim Inc." };
+
+            var personID = service.AddPerson(person);
+
+            service.AddContactInfo(personID, new Contact.Models.ContactInfo()
+            {
+                Type = Contact.Models.Enums.ContactType.Location,
+                Value = "Ýzmir"
+            });
+
+            var newPerson = service.GetPersonByID(personID);
+
+            Assert.IsTrue(service.RemoveContactInfo(personID, newPerson.ContactInfos[0].ID));
+        }
     }
 }

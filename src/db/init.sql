@@ -105,3 +105,22 @@ BEGIN
     WHERE p.id = p_person_id;
 END;    
 $$ LANGUAGE plpgsql;
+
+-- Removes a person by ID
+CREATE OR REPLACE FUNCTION public.sp_remove_person(p_person_id UUID)
+    RETURNS VOID
+AS $$
+BEGIN
+    DELETE FROM public.contact WHERE person_id = p_person_id;
+    DELETE FROM public.person WHERE id = p_person_id;
+END;    
+$$ LANGUAGE plpgsql;
+
+-- Removes a Contact Info from Person
+CREATE OR REPLACE FUNCTION public.sp_remove_contact_info(p_person_id UUID, p_contact_info_id UUID)
+    RETURNS VOID
+AS $$
+BEGIN
+    DELETE FROM public.contact WHERE id = p_contact_info_id AND person_id = p_person_id;
+END;    
+$$ LANGUAGE plpgsql;

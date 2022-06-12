@@ -107,14 +107,14 @@ namespace Contact.Service
                 throw new DBManagerNullException("ContactService");
             #endregion
 
-            
+
             IDataReader reader = null;
             List<Person> list = new List<Person>();
             try
             {
                 var parameters = new List<IDbDataParameter>();
-               parameters.Add(_dbManager.CreateParameter(Constant.P_PAGE_ROW_COUNT, pageRowCount, DbType.Int32));
-               parameters.Add(_dbManager.CreateParameter(Constant.P_PAGE_NUMBER, pageNumber, DbType.Int32));
+                parameters.Add(_dbManager.CreateParameter(Constant.P_PAGE_ROW_COUNT, pageRowCount, DbType.Int32));
+                parameters.Add(_dbManager.CreateParameter(Constant.P_PAGE_NUMBER, pageNumber, DbType.Int32));
 
                 reader = _dbManager.GetDataReader(Constant.SP_GET_ALL_PERSONS, parameters.ToArray());
                 while (reader.Read())
@@ -190,14 +190,48 @@ namespace Contact.Service
             return model;
         }
 
+        /// <summary>
+        /// Removes a Contact Info from a Person by ID
+        /// </summary>
+        /// <param name="personID">UniqueID of Person</param>
+        /// <param name="contactInfoID">UniqueID of Contact Info</param>
+        /// <returns></returns>
+        /// <exception cref="DBManagerNullException">Throws when the DB manager null</exception>
         public bool RemoveContactInfo(Guid personID, Guid contactInfoID)
         {
-            throw new NotImplementedException();
+            #region --Data Validations--
+            if (_dbManager is null)
+                throw new DBManagerNullException("ContactService");
+            #endregion
+
+            var parameters = new List<IDbDataParameter>();
+            parameters.Add(_dbManager.CreateParameter(Constant.P_PERSON_ID, personID, DbType.Guid));
+            parameters.Add(_dbManager.CreateParameter(Constant.P_CONTACT_INFO_ID, contactInfoID, DbType.Guid));
+
+            _dbManager.Insert(Constant.SP_REMOVE_CONTACT_INFO, parameters.ToArray());
+
+            return true;
         }
 
+        /// <summary>
+        /// Removes a Person by UniqueID
+        /// </summary>
+        /// <param name="personID">UniqueID of Person</param>
+        /// <returns>Action result</returns>
+        /// <exception cref="DBManagerNullException">Throws when the DB manager null</exception>
         public bool RemovePerson(Guid personID)
         {
-            throw new NotImplementedException();
+            #region --Data Validations--
+            if (_dbManager is null)
+                throw new DBManagerNullException("ContactService");
+            #endregion
+
+            var parameters = new List<IDbDataParameter>();
+            parameters.Add(_dbManager.CreateParameter(Constant.P_PERSON_ID, personID, DbType.Guid));
+
+            _dbManager.Insert(Constant.SP_REMOVE_PERSON, parameters.ToArray());
+
+            return true;
         }
 
 
