@@ -53,20 +53,14 @@ BEGIN
 END;    
 $$ LANGUAGE plpgsql;
 
--- AddContactInfo function creating
-CREATE OR REPLACE FUNCTION public.sp_add_contact_info(p_person_id UUID,p_type SMALLINT, p_value VARCHAR)
-    RETURNS UUID
+-- GetAllPersons function creating
+CREATE OR REPLACE FUNCTION public.sp_get_all_persons(p_page_row_count INT DEFAULT 10, p_page_number INT DEFAULT 0)
+    RETURNS TABLE(id UUID,name VARCHAR,surname VARCHAR,company VARCHAR,create_date TIMESTAMP WITH TIME ZONE)
 AS $$
-DECLARE 
-    v_contact_id UUID;
 BEGIN
-
-    SELECT uuid_generate_v4() INTO v_contact_id;
-    
-    INSERT INTO public.contact(id,person_id,type,value)
-    SELECT v_contact_id, p_person_id AS person_id, p_type AS type, p_value AS value;
-    
-    
-    RETURN v_contact_id;
+    RETURN QUERY
+    SELECT * FROM public.person
+    ORDER BY create_date DESC
+	LIMIT p_page_row_count OFFSET (p_page_number * p_page_row_count);
 END;    
 $$ LANGUAGE plpgsql;
