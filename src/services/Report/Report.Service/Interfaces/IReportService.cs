@@ -1,6 +1,6 @@
 ﻿namespace Report.Service.Interfaces
 {
-    public interface IReportService
+    public interface IReportService : IDisposable
     {
         Guid AddReportRequest(string location);
         List<Models.Report> GetReports();

@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS report (
 	id UUID NOT NULL,
 	location VARCHAR(100),
 	status SMALLINT,
-	path VARCHAR(100),
+	path VARCHAR(100)s,
 	create_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (id)
 );
@@ -146,5 +146,22 @@ BEGIN
     SELECT COUNT(1) FROM contact p INNER JOIN contact c ON p.person_id = c.person_id AND c.type = 3 AND c.value = p_location WHERE p.type = 1 INTO v_phone_count;
     RETURN QUERY
     SELECT p_location, v_person_count, v_phone_count;
+END;    
+$$ LANGUAGE plpgsql;
+
+
+-- AddReportRequest function creating
+CREATE OR REPLACE FUNCTION public.sp_add_report_request(p_location VARCHAR)
+    RETURNS UUID
+AS $$
+DECLARE 
+    v_report_id UUID;
+BEGIN
+    SELECT uuid_generate_v4() INTO v_report_id;
+
+    INSERT INTO public.report(id,location,status)
+    VALUES (v_report_id,p_location,1);
+    
+    RETURN v_report_id;
 END;    
 $$ LANGUAGE plpgsql;

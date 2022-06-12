@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\lib\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\Report.Models\Report.Models.csproj" />
   </ItemGroup>
 
