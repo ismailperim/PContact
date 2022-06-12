@@ -165,3 +165,15 @@ BEGIN
     RETURN v_report_id;
 END;    
 $$ LANGUAGE plpgsql;
+
+-- GetAllReports function creating 
+CREATE OR REPLACE FUNCTION public.sp_get_all_reports(p_page_row_count INT DEFAULT 10, p_page_number INT DEFAULT 0)
+    RETURNS TABLE(id UUID,location VARCHAR,status SMALLINT,path VARCHAR,create_date TIMESTAMP WITH TIME ZONE)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT * FROM public.report
+    ORDER BY create_date DESC
+	LIMIT p_page_row_count OFFSET (p_page_number * p_page_row_count);
+END;    
+$$ LANGUAGE plpgsql;

@@ -35,5 +35,17 @@ namespace Test.ReportService
 
             Assert.Pass();
         }
+
+        [Test]
+        public void Get_All_Report_Requests()
+        {
+            var service = new Report.Service.ReportService(_provider);
+
+            service.AddReportRequest("Ýzmir");
+
+            var list = service.GetAllReports();
+
+            Assert.IsTrue(list.Count > 0);
+        }
     }
 }

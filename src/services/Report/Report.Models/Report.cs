@@ -5,6 +5,8 @@ namespace Report.Models
     public class Report
     {
         public Guid ID { get; set; }
+        public string Location { get; set; }
+            
         public DateTime CreateDate { get; set; }
         public ReportStatus Status { get; set; }
 
