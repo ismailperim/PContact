@@ -4,5 +4,6 @@
     {
         public MessageQueueOptions? MessageQueueOptions { get; set; }
         public DatabaseOptions? DatabaseOptions { get; set; }
+        public ContactApiOptions? ContactApiOptions { get; set; }
     }
 }
