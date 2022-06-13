@@ -36,10 +36,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseStaticFiles(new StaticFileOptions
+app.UseStaticFiles(new StaticFileOptions()
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Upload")),
-    RequestPath = "/upload"
+    FileProvider = new PhysicalFileProvider($@"{AppDomain.CurrentDomain.BaseDirectory}/wwwroot"),
+    ServeUnknownFileTypes = true
 });
 
 app.UseHttpsRedirection();

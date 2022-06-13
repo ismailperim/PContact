@@ -60,7 +60,7 @@ namespace Report.Service
                     sheet.Cells[sheet.Dimension.Address].Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     sheet.Cells[sheet.Dimension.Address].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
 
-                    await package.SaveAsAsync(new FileInfo($"{AppDomain.CurrentDomain.BaseDirectory}/Upload/{x.ID}.xlsx"));
+                    await package.SaveAsAsync(new FileInfo($"{AppDomain.CurrentDomain.BaseDirectory}/wwwroot/upload/{x.ID}.xlsx"));
                 }
 
 

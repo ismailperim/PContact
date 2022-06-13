@@ -8,6 +8,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Include="wwwroot\upload\index.html">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="EPPlus" Version="6.0.5" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
@@ -16,12 +22,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Report.Service\Report.Service.csproj" />
 		<ProjectReference Include="..\Report.Models\Report.Models.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="Upload\index.html">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	</ItemGroup>
 
 

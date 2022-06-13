@@ -57,6 +57,8 @@ namespace Report.API.Controllers
         {
             var reportID = _reportService.AddReportRequest(model.Location);
 
+            model.ID = reportID;
+
             _rabbitMQBus.SendReceive.Send(Constant.Q_REPORT, model);
 
             return _reportService.GetReportByID(reportID);
