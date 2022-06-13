@@ -16,5 +16,7 @@
         public const string C_STATUS = "status";
         public const string C_PATH = "path";
         public const string C_CREATE_DATE = "create_date";
+
+        public const string Q_REPORT = "request.report";
     }
 }

@@ -21,6 +21,8 @@ builder.Services.AddTransient<IDBManager, DBManager>();
 builder.Services.AddTransient<IDataAccess, PostgresDataAccess>();
 builder.Services.AddTransient<IReportService, ReportService>();
 
+builder.Services.AddHostedService<ReportQueueService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

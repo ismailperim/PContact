@@ -1,4 +1,8 @@
+using Core.Models;
+using EasyNetQ;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Report.Service;
 using Report.Service.Interfaces;
 
 
@@ -8,9 +12,12 @@ namespace Report.API.Controllers
     public class ReportController : ControllerBase
     {
         public readonly IReportService _reportService;
-        public ReportController(IReportService reportService)
+        public readonly IBus _rabbitMQBus;
+        
+        public ReportController(IReportService reportService, IOptions<ServiceOptions> options)
         {
             _reportService = reportService;
+            _rabbitMQBus = RabbitHutch.CreateBus(options.Value.MessageQueueOptions?.ConnectionString);
         }
 
         /// <summary>
@@ -49,6 +56,8 @@ namespace Report.API.Controllers
         public Models.Report Add(Models.Report model)
         {
             var reportID = _reportService.AddReportRequest(model.Location);
+
+            _rabbitMQBus.SendReceive.Send(Constant.Q_REPORT, model);
 
             return _reportService.GetReportByID(reportID);
         }
