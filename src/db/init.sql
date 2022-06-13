@@ -188,3 +188,13 @@ BEGIN
     WHERE r.id = p_report_id;
 END;    
 $$ LANGUAGE plpgsql;
+
+
+-- UpdateReport function creating 
+CREATE OR REPLACE FUNCTION public.sp_update_report(p_report_id UUID,p_path VARCHAR)
+    RETURNS VOID
+AS $$
+BEGIN
+    UPDATE public.report SET status = 2, path = p_path WHERE id = p_report_id;
+END;    
+$$ LANGUAGE plpgsql;

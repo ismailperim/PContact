@@ -61,7 +61,7 @@ namespace Report.Service
             try
             {
                 var parameters = new List<IDbDataParameter>();
-                parameters.Add(_dbManager.CreateParameter(Constant.P_REPORT_ID,reportID, DbType.Guid));
+                parameters.Add(_dbManager.CreateParameter(Constant.P_REPORT_ID, reportID, DbType.Guid));
 
 
                 reader = _dbManager.GetDataReader(Constant.SP_GET_REPORT_BY_ID, parameters.ToArray());
@@ -135,6 +135,27 @@ namespace Report.Service
             return list;
         }
 
+        /// <summary>
+        /// Updatesthe status of Report
+        /// </summary>
+        /// <param name="reportID">UniqueID of ReportRequest</param>
+        /// <param name="path">Report file path</param>
+        /// <exception cref="DBManagerNullException">Throws when the DB manager null</exception>
+        public void UpdateReport(Guid reportID, string path)
+        {
+                #region --Data Validations--
+                if (_dbManager is null)
+                    throw new DBManagerNullException("ReportService");
+                #endregion
+
+                var parameters = new List<IDbDataParameter>();
+                parameters.Add(_dbManager.CreateParameter(Constant.P_REPORT_ID, reportID, DbType.Guid));
+                parameters.Add(_dbManager.CreateParameter(Constant.P_PATH, path, DbType.String));
+
+
+            _dbManager.Insert(Constant.SP_UPDATE_REPORT, parameters.ToArray());
+            
+        }
         #region -- Dispose --
         ~ReportService() => Dispose(false);
         public void Dispose()

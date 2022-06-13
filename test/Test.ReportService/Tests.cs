@@ -59,6 +59,18 @@ namespace Test.ReportService
             var result = service.GetReportByID(reportID);
 
             Assert.IsTrue(result.Location == "Ýzmir");
-        }        
+        }
+
+        [Test]
+        public void Update_Report_Request()
+        {
+            var service = new Report.Service.ReportService(_provider);
+
+            var reportID = service.AddReportRequest("Ýzmir");
+
+            service.UpdateReport(reportID, "UnitTest.xlsx");
+
+            Assert.Pass();
+        }
     }
 }

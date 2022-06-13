@@ -5,5 +5,6 @@
         Guid AddReportRequest(string location);
         List<Models.Report> GetAllReports(int pageRowCount = 10, int pageNumber = 0);
         Models.Report GetReportByID(Guid reportID);
+        void UpdateReport(Guid reportID, string path);
     }
 }
