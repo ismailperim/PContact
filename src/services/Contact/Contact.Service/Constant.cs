@@ -8,6 +8,7 @@
         public const string SP_GET_PERSON_BY_ID = "public.sp_get_person_by_id";
         public const string SP_REMOVE_PERSON = "public.sp_remove_person";
         public const string SP_REMOVE_CONTACT_INFO = "public.sp_remove_contact_info";
+        public const string SP_GET_CONTACT_REPORT = "public.sp_get_contact_report";
 
 
         public const string P_NAME = "p_name";
@@ -20,6 +21,7 @@
         public const string P_PAGE_ROW_COUNT = "p_page_row_count";
         public const string P_PAGE_NUMBER = "p_page_number";
         public const string P_CONTACT_INFO_ID = "p_contact_info_id";
+        public const string P_LOCATION = "p_location";
 
 
         public const string C_ID = "id";
@@ -28,8 +30,9 @@
         public const string C_COMPANY = "company";
         public const string C_CREATE_DATE = "create_date";
         public const string C_CONTACT_INFO = "contact_info";
-
-
+        public const string C_LOCATION = "location";
+        public const string C_PERSON_COUNT = "person_count";
+        public const string C_PHONE_COUNT = "phone_count";
 
 
     }

@@ -10,5 +10,6 @@ namespace Contact.Service.Interfaces
         bool RemoveContactInfo(Guid personID, Guid contactInfoID);
         List<Person> GetAllPersons(int pageRowCount = 10, int pageNumber = 0);
         Person GetPersonByID(Guid personID);
+        ContactReport GetReport(string location);
     }
 }

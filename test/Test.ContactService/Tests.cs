@@ -46,7 +46,7 @@ namespace Test.ContactService
             person.ContactInfos = new List<Contact.Models.ContactInfo>();
             person.ContactInfos.Add(new Contact.Models.ContactInfo() { Type = Contact.Models.Enums.ContactType.Phone, Value = "+905551231212" });
             person.ContactInfos.Add(new Contact.Models.ContactInfo() { Type = Contact.Models.Enums.ContactType.Email, Value = "ismail@perim.net" });
-
+            person.ContactInfos.Add(new Contact.Models.ContactInfo() { Type = Contact.Models.Enums.ContactType.Location, Value = "Ýzmir" });
 
 
             service.AddPerson(person);
@@ -184,6 +184,17 @@ namespace Test.ContactService
             var newPerson = service.GetPersonByID(personID);
 
             Assert.IsTrue(service.RemoveContactInfo(personID, newPerson.ContactInfos[0].ID));
+        }
+
+
+        [Test]
+        public void Get_Contact_Report()
+        {
+            var service = new Contact.Service.ContactService(_provider);
+
+            var result = service.GetReport("Ýzmir");
+
+            Assert.IsTrue(result.Location == "Ýzmir");
         }
     }
 }

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="EasyNetQ" Version="6.4.1" />
+		<PackageReference Include="EPPlus" Version="6.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\lib\DataAccess\DataAccess.csproj" />
+		<ProjectReference Include="..\Report.Models\Report.Models.csproj" />
+	</ItemGroup>
+
+</Project>

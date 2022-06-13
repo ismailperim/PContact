@@ -1,5 +1,14 @@
 version: "3.8"
 services:
+  messagebroker:
+    container_name: "rabbitmq.pcontact"
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=ismail
+      - RABBITMQ_DEFAULT_PASS=admin
+    ports:
+      - '5672:5672'
+      - '15672:15672'
   db:
     image: postgres
     container_name: db.pcontact
