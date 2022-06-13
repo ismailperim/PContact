@@ -15,30 +15,9 @@ namespace Core.Services
         {
             _baseUrl = options?.Value?.ContactApiOptions?.BaseUrl;
         }
-        
+
 
         public async Task<T> Get<T>(string url, string? parameters)
-        {
-            #region --Validations--
-            if (string.IsNullOrEmpty(_baseUrl))
-                throw new ApiClientServiceException("BaseUrl null");
-
-            if(string.IsNullOrEmpty(url))
-                throw new ApiClientServiceException("Url null");
-            #endregion
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(_baseUrl);
-                var result = await client.GetAsync(url);
-                result.EnsureSuccessStatusCode();
-                string resultContentString = await result.Content.ReadAsStringAsync();
-                T resultContent = JsonConvert.DeserializeObject<T>(resultContentString);
-                return resultContent;
-            }
-        }
-
-        public  async Task Post<T>(string url, T contentValue)
         {
             #region --Validations--
             if (string.IsNullOrEmpty(_baseUrl))
@@ -47,7 +26,28 @@ namespace Core.Services
             if (string.IsNullOrEmpty(url))
                 throw new ApiClientServiceException("Url null");
             #endregion
-          
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_baseUrl);
+                var result = await client.GetAsync($"{url}" + (!string.IsNullOrEmpty(parameters) ? "?" + parameters : ""));
+                result.EnsureSuccessStatusCode();
+                string resultContentString = await result.Content.ReadAsStringAsync();
+                T resultContent = JsonConvert.DeserializeObject<T>(resultContentString);
+                return resultContent;
+            }
+        }
+
+        public async Task Post<T>(string url, T contentValue)
+        {
+            #region --Validations--
+            if (string.IsNullOrEmpty(_baseUrl))
+                throw new ApiClientServiceException("BaseUrl null");
+
+            if (string.IsNullOrEmpty(url))
+                throw new ApiClientServiceException("Url null");
+            #endregion
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_baseUrl);
@@ -57,7 +57,7 @@ namespace Core.Services
             }
         }
 
-        public  async Task Put<T>(string url, T stringValue)
+        public async Task Put<T>(string url, T stringValue)
         {
             #region --Validations--
             if (string.IsNullOrEmpty(_baseUrl))
@@ -66,7 +66,7 @@ namespace Core.Services
             if (string.IsNullOrEmpty(url))
                 throw new ApiClientServiceException("Url null");
             #endregion
-            
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_baseUrl);
@@ -75,8 +75,8 @@ namespace Core.Services
                 result.EnsureSuccessStatusCode();
             }
         }
-        
-        public  async Task Delete(string url)
+
+        public async Task Delete(string url)
         {
             #region --Validations--
             if (string.IsNullOrEmpty(_baseUrl))
@@ -85,13 +85,13 @@ namespace Core.Services
             if (string.IsNullOrEmpty(url))
                 throw new ApiClientServiceException("Url null");
             #endregion
-            
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(_baseUrl);
                 var result = await client.DeleteAsync(url);
                 result.EnsureSuccessStatusCode();
             }
-        }        
+        }
     }
 }
